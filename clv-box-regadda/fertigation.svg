@@ -1,0 +1,2505 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1498.2397"
+   viewBox="-12 0 1498.2397 430.10413"
+   role="img"
+   version="1.1"
+   id="svg49"
+   sodipodi:docname="fertigation.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   height="430.10413"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview49"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:showpageshadow="2"
+     inkscape:zoom="0.78358112"
+     inkscape:cx="818.03911"
+     inkscape:cy="181.21927"
+     inkscape:window-width="1920"
+     inkscape:window-height="941"
+     inkscape:window-x="98"
+     inkscape:window-y="148"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g7" />
+  <title
+     id="title1">Deux bacs 200L avec souffleur double turbine bleu et raccord en T</title>
+  <desc
+     id="desc1">Souffleur double turbine bleu alimentant deux bacs 200L via un raccord en T</desc>
+  <!--
+    ═══ MODÈLE DE RÉFÉRENCE : SYNOPTIQUE ANIMÉ PAR CONVENTION DE NOMMAGE ═══
+
+    Deux attributs par objet, chacun son rôle :
+      id              rôle fonctionnel lu par l'app (s_…), ou id technique
+                      référencé par url(#…) : grad-* (dégradés), clip-* (masques)
+      inkscape:label  nom lisible, kebab-case style BEM : bloc[-n]__element[-n],
+                      puis la variante après deux tirets (panneau Objets)
+
+    Ids lus par l'app (src/services/synoptic/behaviors.ts), {clé} = la clé :
+      s_element_{clé}        zone tactile ; porte l'affectation (cycle, module, capteur)
+      s_element_value_{clé}  texte remplacé par la valeur de l'affectation
+      s_cfg_{clé}            libellé visible en Configuration seulement
+      s_{type}_{clé}[-x]     objet animé quand l'affectation de {clé} est active
+                             (cycle / module en cours, capteur positif). Le suffixe -x
+                             permet plusieurs objets pour une même clé.
+
+    Zone à toucher (s_element_) : objet ou groupe entier (un bac, le souffleur).
+    Affectée à un cycle, elle respire : elle pâlit puis revient, sans changer
+    de taille, donc rien ne se décale.
+
+    Commentaires XML : jamais de chevrons dedans. Le svgson du box (xml-reader)
+    les prend pour des balises et refuse le fichier : écrire {clé}.
+
+    Types d'animation :      en marche                     à l'arrêt
+      spin                   rotation autour du centre      immobile
+      wave                   glisse horizontalement         masqué
+      flow                   tirets / bulles qui défilent   masqué
+      hide                   masqué                         visible
+      show                   visible                        masqué
+      blink / flash          clignote                       normal / masqué
+
+    Clés de ce modèle : chacune s'affecte séparément dans l'app
+    (lettres, chiffres, _ ; pas de tiret dans une clé).
+      blower  souffleur (g69)          s_spin_blower-1, s_spin_blower-2
+      tank1   vagues du bac gauche     s_element_tank1 (groupe du bac),
+                                       s_hide_tank1, s_wave_tank1-a/b/c
+      tank2   vagues du bac droit      idem avec tank2
+      air1    bulles vers le bac 1     s_element_air1 (collier du bac 1),
+                                       s_flow_air1-… (tuyau + montée)
+      air2    bulles vers le bac 2     idem avec air2
+
+    Turbine (s_spin_) : le groupe du rotor tourne autour du centre de sa boîte ;
+      le dessiner centré sur l'axe. Le moyeu reste hors du groupe.
+
+    Bac (s_wave_ + s_hide_), dans le groupe du liquide qui porte clip-tank-N :
+      s_hide_{clé}    surface plane stable (y 356 = 100 % de la jauge), à l'arrêt
+      s_wave_{clé}-x  couche de vague, en marche
+      Règle : le tracé est fait de 2 MOTIFS IDENTIQUES côte à côte, chacun plus
+      large que le bac ; il glisse de la moitié de sa largeur puis recommence.
+      La longueur d'onde divise le motif (ici 240 px ; ondes de 80 / 120 / 60).
+      Retourné horizontalement (matrix(-1,0,0,1,2·cx,0)), il glisse dans
+      l'autre sens. Tracés en M/Q/L/Z absolus.
+
+    Bulles (s_flow_) : chaque bulle est un tiret de longueur quasi nulle à bout
+      rond, posé le long d'un trajet ; le trajet EST le chemin des bulles et se
+      modifie dans Inkscape (Chemin, Inverser : change le sens).
+        stroke-linecap  round              épaisseur du trait = diamètre
+        stroke-dasharray "0.01 17.99" × 3  espacement 18 px ; motif 54 px
+      Le motif défile d'une période par seconde : 3 répétitions = 54 px/s.
+      Le dasharray se pose sur chaque trajet s_flow_ (pas sur le groupe :
+      l'app le lit sur l'objet animé), identique sur les trajets qui se suivent.
+      Contour d'une bulle : deux trajets superposés (…-ring large et foncé
+      dessous, …-core plus fin et clair dessus).
+      Raccord entre deux trajets (tuyau puis montée) : la longueur du premier
+      doit être un multiple de 18 px, sinon les bulles sautent au raccord.
+      Ici trajet tuyau = 648 px (36 × 18), d'où la montée à y 529.96.
+      Les trajets gauche et droit partagent le début (tronc, descente) : leurs
+      bulles s'y superposent exactement.
+  -->
+  <path
+     id="piping__line-2"
+     inkscape:label="piping__line"
+     d="M -401.06309,5.77887 -425.25,5.75 c -4,-0.00477 -12,-12 0,-12 h 24.14452 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="csscc"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1"
+     transform="rotate(-90,50.350822,-81.53623)" />
+  <path
+     id="piping__line-2-2-4-0"
+     inkscape:label="piping__line"
+     d="M -401.06309,5.77887 -425.25,5.75 c -4,-0.00477 -6,2 -6,6 v 381.19648 l -12,-0.40905 V 11.75 c 0,-12 6,-18 18,-18 h 24.14452 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="cssccsscc"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1-5-3-3"
+     transform="rotate(90,313.71376,911.7182)" />
+  <path
+     id="piping__line-2-2-4-4-9"
+     inkscape:label="piping__line"
+     d="M -193.49407,5.77887 -370.86748,5.75 c -4,-6.511e-4 -6,2 -6,6 v 32 l -12,-0.40905 V 11.75 c 0,-12 6,-18 18,-18 h 177.33102 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="cssccsscc"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1-5-3-2-4"
+     transform="matrix(0,-1,-1,0,1226.257,22.847066)" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#da9ddd;stroke-width:4.939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:14.817, 14.817;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="m 836.99756,161.06978 376.57794,0.0194 5.349,0.78019 3.9003,2.11727 3.1203,4.06743 1.1144,5.90625 c -0.5701,18.9803 -1.106,96.78229 -0.3699,221.54982 l -5.6287,10.13166 -28.894,-0.37525 0.7505,0.37525"
+     id="s_flow_000010-2"
+     sodipodi:nodetypes="cccccccccc" />
+  <path
+     id="piping__line-2-8-3-6-2"
+     inkscape:label="piping__line"
+     d="m -443.25,16.640796 c 0.003,-11.9999999 6,-18.0000003 18,-18.0000003 h 103.11826 L -322.40883,6.6276619 -425.25,7.0479034 c -3.9999,0.016345 -6.00073,5.5928926 -6,9.5928926 l 0.0591,323.671524 c 0.14205,14.45028 8.24102,15.81802 14.09268,15.81802 74.58743,-0.0288 115.03545,-0.0235 189.62289,-0.0253 l 783.36527,-0.0186 c 5.85166,0 14.00967,-1.36721 14.03358,-4.10141 l 0.61478,-70.29885 11.6841,-0.18941 v 70.48826 c 0,8.20281 -8.77749,12.30421 -26.33246,12.30421 -335.70917,0.0458 -637.278998,-0.0451 -972.98816,0.0439 -17.55497,0 -26.33245,-4.1014 -26.24212,-24.22536 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="ssccsscscssccssscs"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1-7-5-9-11"
+     transform="matrix(-0.54654708,0,0,0.79955136,848.63921,121.82699)" />
+  <g
+     id="g34-7-4"
+     transform="matrix(0,0.8180352,-0.65479419,0,1806.6238,18.87605)"
+     inkscape:transform-center-x="6.0196155"
+     inkscape:transform-center-y="0.97846208">
+    <path
+       d="m 91.438736,1198.6655 24.735144,4.0125 h 12.90529 l 37.64044,-2.839 v 15.3846 l -37.64044,-2.5456 h -12.90529 l -24.735144,4.5993 z"
+       id="path1-7-3-9"
+       style="stroke-width:1.03703"
+       sodipodi:nodetypes="ccccccccc" />
+    <path
+       d="m 91.75461,1458.4687 24.73514,4.0125 h 12.90529 l 37.64044,-2.839 v 15.3846 l -37.64044,-2.5456 h -12.90529 l -24.73514,4.5993 z"
+       id="path1-7-3-9-9"
+       style="stroke-width:1.03703"
+       sodipodi:nodetypes="ccccccccc" />
+    <rect
+       style="fill:#130b0d;fill-opacity:0.955399;stroke:#180e0e;stroke-width:0.909251;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect7-4-7"
+       width="7.701931"
+       height="17.679756"
+       x="124.56951"
+       y="1192.222"
+       rx="0"
+       ry="0" />
+  </g>
+  <path
+     style="fill:#000000;fill-opacity:0;stroke-width:4.939;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:0.7;paint-order:fill markers stroke"
+     d="m 799.97415,182.95879 1.51206,-90.72337 9.07233,-4.53616 18.14468,-1.51206 355.33318,3.02411 z"
+     id="path4" />
+  <path
+     id="piping__line-2-2-4-4-9-3"
+     inkscape:label="piping__line"
+     d="M -64.297595,5.77887 -425.25,5.75 c -4,-3.199e-4 -6,2 -6,6 v 125.13884 l -12,-0.40905 V 11.75 c 0,-12 6,-18 18,-18 h 360.910015 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="cssccsscc"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1-5-3-2-4-0"
+     transform="translate(1238.3527,88.906806)" />
+  <path
+     id="piping__line-2-2-4-4-91-7"
+     inkscape:label="piping__line"
+     d="m -431.25,11.75 v 212 l -12,-0.40905 V 11.75 Z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="ccccc"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1-5-3-2-9-0"
+     transform="translate(1597.72,183.63157)" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#da9ddd;stroke-width:4.939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:14.817, 14.817;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="m 1161.3966,362.11313 -1.1257,-126.08292 h 0.7505"
+     id="s_flow_000010-3" />
+  <defs
+     id="defs18">
+    <linearGradient
+       id="linearGradient31"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#fe2ee3;stop-opacity:0;"
+         offset="0"
+         id="stop31" />
+      <stop
+         style="stop-color:#700722;stop-opacity:0;"
+         offset="1"
+         id="stop32" />
+    </linearGradient>
+    <linearGradient
+       id="swatch14"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#fee3e7;stop-opacity:0;"
+         offset="0"
+         id="stop19" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <clipPath
+       id="clip-tank-1">
+      <path
+         d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+         id="path1" />
+    </clipPath>
+    <clipPath
+       id="clip-tank-2">
+      <path
+         d="m 444,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+         id="path2" />
+    </clipPath>
+    <linearGradient
+       id="grad-tank-wall"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0%"
+         stop-color="#5F5E5A"
+         id="stop2" />
+      <stop
+         offset="10%"
+         stop-color="#B4B2A9"
+         id="stop3" />
+      <stop
+         offset="48%"
+         stop-color="#F1EFE8"
+         id="stop4" />
+      <stop
+         offset="86%"
+         stop-color="#B4B2A9"
+         id="stop5" />
+      <stop
+         offset="100%"
+         stop-color="#5F5E5A"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="grad-liquid"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0%"
+         stop-color="#5DCAA5"
+         stop-opacity="0.9"
+         id="stop7" />
+      <stop
+         offset="100%"
+         stop-color="#085041"
+         stop-opacity="0.97"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       id="grad-tank-shine"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0%"
+         stop-color="white"
+         stop-opacity="0"
+         id="stop9" />
+      <stop
+         offset="28%"
+         stop-color="white"
+         stop-opacity="0.13"
+         id="stop10" />
+      <stop
+         offset="55%"
+         stop-color="white"
+         stop-opacity="0"
+         id="stop11" />
+    </linearGradient>
+    <linearGradient
+       id="grad-blower-body"
+       x1="499.83856"
+       y1="14.034532"
+       x2="614.5556"
+       y2="14.034532"
+       gradientTransform="matrix(0.52146529,0,0,1.4741625,56.063854,128.92856)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0%"
+         stop-color="#0C447C"
+         id="stop12" />
+      <stop
+         offset="35%"
+         stop-color="#185FA5"
+         id="stop13" />
+      <stop
+         offset="65%"
+         stop-color="#0C447C"
+         id="stop14" />
+      <stop
+         offset="100%"
+         stop-color="#042C53"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="grad-turbine"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0%"
+         stop-color="#378ADD"
+         id="stop16" />
+      <stop
+         offset="50%"
+         stop-color="#185FA5"
+         id="stop17" />
+      <stop
+         offset="100%"
+         stop-color="#0C447C"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-tank-wall"
+       id="linearGradient58"
+       x1="10.839705"
+       y1="1154.004"
+       x2="62.213337"
+       y2="1154.004"
+       gradientTransform="matrix(3.8054542,0,0,0.32219978,7.5234375,103.64225)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-tank-wall"
+       id="linearGradient59"
+       x1="49.179077"
+       y1="257.60956"
+       x2="284.27905"
+       y2="257.60956"
+       gradientTransform="matrix(0.83368787,0,0,1.4707141,7.5234375,103.64225)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-tank-shine"
+       id="linearGradient61"
+       x1="50.457699"
+       y1="258.03793"
+       x2="283.5242"
+       y2="258.03793"
+       gradientTransform="matrix(0.83238041,0,0,1.4730242,7.5234375,103.64225)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-tank-wall"
+       id="linearGradient62"
+       x1="116.47756"
+       y1="1154.004"
+       x2="167.8512"
+       y2="1154.004"
+       gradientTransform="matrix(3.8054542,0,0,0.32006357,7.5234375,107.13866)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-tank-wall"
+       id="linearGradient63"
+       x1="531.3739"
+       y1="257.60956"
+       x2="766.47394"
+       y2="257.60956"
+       gradientTransform="matrix(0.83368787,0,0,1.4609632,7.5234375,107.13866)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-tank-shine"
+       id="linearGradient65"
+       x1="533.40997"
+       y1="258.03793"
+       x2="766.47644"
+       y2="258.03793"
+       gradientTransform="matrix(0.83238041,0,0,1.463258,7.5234375,107.13866)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-turbine"
+       id="linearGradient68"
+       x1="309.25"
+       y1="77.25"
+       x2="309.25"
+       y2="138.75"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8964633,0,0,2.0267744,-290.92858,3.9999953)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-turbine"
+       id="linearGradient69"
+       x1="309.25"
+       y1="131.25"
+       x2="309.25"
+       y2="192.75"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.8964633,0,0,2.0267744,-290.92858,3.9999953)" />
+    <clipPath
+       id="clip-tank-1-2">
+      <path
+         d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+         id="path1-2" />
+    </clipPath>
+    <clipPath
+       id="clipPath17">
+      <path
+         d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+         id="path17" />
+    </clipPath>
+    <clipPath
+       id="clip-tank-1-7">
+      <path
+         d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+         id="path1-8" />
+    </clipPath>
+    <clipPath
+       id="clipPath17-3">
+      <path
+         d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+         id="path17-6" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <linearGradient
+       id="grad-blower-body-7"
+       x1="499.83856"
+       y1="14.034532"
+       x2="614.5556"
+       y2="14.034532"
+       gradientTransform="matrix(0,0.54889029,-1.4005066,0,674.59129,-836.21325)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0%"
+         stop-color="#0C447C"
+         id="stop12-5" />
+      <stop
+         offset="35%"
+         stop-color="#185FA5"
+         id="stop13-7" />
+      <stop
+         offset="65%"
+         stop-color="#0C447C"
+         id="stop14-2" />
+      <stop
+         offset="100%"
+         stop-color="#042C53"
+         id="stop15-9" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-turbine"
+       id="linearGradient69-3"
+       x1="309.25"
+       y1="131.25"
+       x2="309.25"
+       y2="192.75"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1.4154847,-1.4245643,0,914.49229,-1478.3137)" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3-2"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3-2-4"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3-3"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-9"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-11"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3-2-9"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3-2-9-0"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-5-3-2-4-0"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-2"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-2-5"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-2-5-3"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-2-5-3-9"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1-7-5-9-2-5-3-96"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-liquid"
+       id="linearGradient1"
+       x1="39.179943"
+       y1="327.10614"
+       x2="39.179943"
+       y2="551.30249"
+       gradientTransform="matrix(0.91883747,0,0,1.3344216,7.5234375,103.64225)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-liquid"
+       id="linearGradient2"
+       x1="21.693893"
+       y1="482.6243"
+       x2="21.693893"
+       y2="829.72656"
+       gradientTransform="matrix(1.3828777,0,0,0.88664134,7.5234375,103.64225)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-liquid"
+       id="linearGradient3"
+       x1="476.6893"
+       y1="327.10614"
+       x2="476.6893"
+       y2="551.30249"
+       gradientTransform="matrix(0.91883747,0,0,1.3255743,7.5234375,107.13866)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#grad-liquid"
+       id="linearGradient4"
+       x1="312.39206"
+       y1="482.6243"
+       x2="312.39206"
+       y2="829.72656"
+       gradientTransform="matrix(1.3828777,0,0,0.88076285,7.5234375,107.13866)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <path
+     id="piping__line-2-8-3-6"
+     inkscape:label="piping__line"
+     d="M -443.25,328.18665 V 8.5523055 c 0,-12 6,-18 18,-18 h 103.11826 l -0.27709,7.9868663 -102.84117,0.4202415 c -3.9999,0.016345 -6,5.5928922 -6,9.5928922 V 328.5957 l -0.19577,14.44113 0.61477,20.2708 c 0.0829,2.73366 8.18196,4.08762 14.03358,4.1014 l 67.76023,0.1595 1327.35843,0.15949 c 5.85166,0 14.00974,-1.3672 14.03359,-4.1014 l 0.61477,-70.29885 11.6841,-0.18941 v 70.48826 c 0,8.2028 -8.77749,12.30421 -26.33246,12.30421 l -1327.35843,-0.1595 -67.76023,-0.1595 c -17.55486,-0.0413 -26.33245,-4.1014 -26.33245,-12.3042 v -20.46021 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     sodipodi:nodetypes="cssccssccsscssccsscsscc"
+     style="stroke-linecap:square"
+     inkscape:path-effect="#path-effect1-7-5-9"
+     inkscape:original-d="M -443.25,328.18665 V 8.5523055 c 0,-12 6,-18 18,-18 h 103.11826 l -0.27709,7.9868663 -102.84117,0.4202415 c -3.9999,0.016345 -6,5.5928922 -6,9.5928922 V 328.5957 l -0.19577,14.44113 0.61477,20.2708 c 0.0829,2.73366 8.18196,4.08762 14.03358,4.1014 l 67.76023,0.1595 1327.35843,0.15949 c 5.85166,0 14.00974,-1.3672 14.03359,-4.1014 l 0.61477,-70.29885 11.6841,-0.18941 v 70.48826 c 0,8.2028 -8.77749,12.30421 -26.33246,12.30421 l -1327.35843,-0.1595 -67.76023,-0.1595 c -17.55486,-0.0413 -26.33245,-4.1014 -26.33245,-12.3042 v -20.46021 z"
+     transform="matrix(-0.54654708,0,0,0.79955136,677.69811,128.40567)" />
+  <g
+     id="g34-7"
+     transform="matrix(0,0.8180352,-0.65479419,0,1635.6827,25.45473)"
+     inkscape:transform-center-x="6.0196155"
+     inkscape:transform-center-y="0.97846208">
+    <rect
+       style="fill:#130b0d;fill-opacity:0.955399;stroke:#180e0e;stroke-width:0.909251;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect7-4"
+       width="7.701931"
+       height="17.679756"
+       x="116.56251"
+       y="1192.222"
+       rx="0"
+       ry="0" />
+  </g>
+  <path
+     style="fill:none;fill-opacity:1;stroke:#51c19a;stroke-width:2.539;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:7.617, 7.617;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="m 131.81208,407.90563 1.79019,17.30519 6.56404,1.19346 769.78249,-0.59673 5.96731,-4.17712 1.79019,-2.38692 -2.38692,-292.99473 -5.96731,-1.79019 -57.28614,0.59673 h 0.59673"
+     id="s_flow_000011" />
+  <!-- ═══ BAC 1 (gauche, clé tank1) ═══ -->
+  <g
+     id="s_rien_tank1"
+     inkscape:label="tank-1"
+     transform="matrix(1,0,0,0.81558319,-7.5234375,-84.528874)">
+    <g
+       id="tank-1__stand"
+       inkscape:label="tank-1__stand"
+       fill="#5f5e5a">
+      <rect
+         x="55"
+         y="588"
+         width="10"
+         height="40"
+         rx="2"
+         ry="2.4522331"
+         stroke="#444441"
+         stroke-width="1"
+         id="rect26" />
+      <rect
+         x="213"
+         y="588"
+         width="10"
+         height="40"
+         rx="2"
+         ry="2.4522331"
+         stroke="#444441"
+         stroke-width="1"
+         id="rect27" />
+      <rect
+         x="44"
+         y="624"
+         width="34"
+         height="7"
+         rx="2"
+         ry="2.4522331"
+         fill="#444441"
+         id="rect28" />
+      <rect
+         x="202"
+         y="624"
+         width="34"
+         height="7"
+         rx="2"
+         ry="2.4522331"
+         fill="#444441"
+         id="rect29" />
+    </g>
+    <rect
+       id="tank-1__rim"
+       inkscape:label="tank-1__rim"
+       x="42"
+       y="304"
+       width="194"
+       height="12"
+       rx="4"
+       ry="4.9044662"
+       fill="url(#grad-tank-wall)"
+       stroke="#5f5e5a"
+       stroke-width="1.5"
+       style="fill:url(#linearGradient58)" />
+    <g
+       id="tank-1__bolts"
+       inkscape:label="tank-1__bolts"
+       fill="#888780"
+       stroke="#5f5e5a"
+       stroke-width="0.8">
+      <circle
+         cx="65"
+         cy="310"
+         r="3.5"
+         id="circle23" />
+      <circle
+         cx="95"
+         cy="310"
+         r="3.5"
+         id="circle24" />
+      <circle
+         cx="185"
+         cy="310"
+         r="3.5"
+         id="circle25" />
+      <circle
+         cx="215"
+         cy="310"
+         r="3.5"
+         id="circle26" />
+    </g>
+    <path
+       id="tank-1__wall"
+       inkscape:label="tank-1__wall"
+       d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+       fill="url(#grad-tank-wall)"
+       stroke="#5f5e5a"
+       stroke-width="2"
+       style="fill:url(#linearGradient59)" />
+    <!-- liquide : bac x 42→236, surface y 356 ; motif de vague 240 px (2 motifs : x 30→510) -->
+    <g
+       id="tank-1__liquid"
+       inkscape:label="tank-1__liquid"
+       clip-path="url(#clip-tank-1)">
+      <!-- à l'arrêt : surface plane stable -->
+      <rect
+         id="s_hide_00001"
+         inkscape:label="tank-1__surface--still"
+         x="36"
+         y="356"
+         width="206"
+         height="244"
+         fill="url(#grad-liquid)"
+         style="fill:url(#linearGradient1)" />
+      <!-- en marche : 3 couches de vague (longueur d'onde 80 / 120 / 60) -->
+      <path
+         id="s_wave_00001-1"
+         inkscape:label="tank-1__wave--a"
+         d="m 30,356 q 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 V 600 H 30 Z"
+         fill="url(#grad-liquid)"
+         style="fill:url(#linearGradient2)" />
+      <!-- retournée autour du centre du bac (x 139) : glisse dans l'autre sens -->
+      <path
+         id="s_wave_00001-2"
+         inkscape:label="tank-1__wave--b"
+         d="m 30,356 q 30,10 60,0 30,-10 60,0 30,10 60,0 30,-10 60,0 30,10 60,0 30,-10 60,0 30,10 60,0 30,-10 60,0 V 600 H 30 Z"
+         transform="matrix(-1,0,0,1,278,0)"
+         fill="#1d9e75"
+         fill-opacity="0.22" />
+      <path
+         id="s_wave_00001-3"
+         inkscape:label="tank-1__wave--c"
+         d="m 30,356 q 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 15,-6 30,0 15,6 30,0 V 600 H 30 Z"
+         fill="#5dcaa5"
+         fill-opacity="0.1" />
+    </g>
+    <path
+       id="tank-1__shine"
+       inkscape:label="tank-1__shine"
+       d="m 42,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310"
+       fill="url(#grad-tank-shine)"
+       fill-opacity="0.5"
+       clip-path="url(#clip-tank-1)"
+       style="fill:url(#linearGradient61)" />
+    <rect
+       id="tank-1__edge-highlight"
+       inkscape:label="tank-1__edge-highlight"
+       x="42"
+       y="310"
+       width="6"
+       height="250"
+       fill="#d3d1c7"
+       fill-opacity="0.3" />
+    <g
+       id="tank-1__drain"
+       inkscape:label="tank-1__drain"
+       transform="translate(9)">
+      <rect
+         x="112"
+         y="586"
+         width="36"
+         height="14"
+         rx="3"
+         ry="3.6783495"
+         fill="#444441"
+         stroke="#2c2a28"
+         stroke-width="1"
+         id="rect30" />
+      <rect
+         x="124"
+         y="591"
+         width="12"
+         height="4"
+         rx="1"
+         ry="1.2261165"
+         fill="#888780"
+         id="rect31" />
+    </g>
+    <g
+       id="tank-1__gauge"
+       inkscape:label="tank-1__gauge">
+      <rect
+         x="29.994223"
+         y="355.81647"
+         width="6.0115542"
+         height="232.40575"
+         fill="#d3d1c7"
+         fill-opacity="0.42"
+         stroke="#888780"
+         stroke-width="0.488446"
+         id="rect32" />
+      <path
+         d="m 27,588 h 9 m -9,-58 h 9 m -9,-58 h 9 m -9,-58 h 9 m -9,-58 h 9"
+         stroke="#5f5e5a"
+         stroke-width="1"
+         id="path32" />
+      <g
+         font-family="sans-serif"
+         font-size="10px"
+         fill="#444441"
+         text-anchor="end"
+         id="g36">
+        <text
+           x="24"
+           y="360"
+           id="text32">100%</text>
+        <text
+           x="24"
+           y="418"
+           id="text33">75%</text>
+        <text
+           x="24"
+           y="476"
+           id="text34">50%</text>
+        <text
+           x="24"
+           y="534"
+           id="text35">25%</text>
+        <text
+           x="24"
+           y="592"
+           id="text36">0%</text>
+      </g>
+    </g>
+  </g>
+  <!-- ═══ BAC 2 (droite, clé tank2) : bac 1 décalé de 402 px, jauge côté droit ═══ -->
+  <g
+     id="s_rien_tank2"
+     inkscape:label="tank-2"
+     transform="matrix(1,0,0,0.82102664,-7.5234375,-87.963696)">
+    <g
+       id="tank-2__stand"
+       inkscape:label="tank-2__stand"
+       fill="#5f5e5a">
+      <rect
+         x="457"
+         y="588"
+         width="10"
+         height="40"
+         rx="2"
+         stroke="#444441"
+         stroke-width="1"
+         id="rect39"
+         ry="2.4359746" />
+      <rect
+         x="615"
+         y="588"
+         width="10"
+         height="40"
+         rx="2"
+         stroke="#444441"
+         stroke-width="1"
+         id="rect40"
+         ry="2.4359746" />
+      <rect
+         x="446"
+         y="624"
+         width="34"
+         height="7"
+         rx="2"
+         fill="#444441"
+         id="rect41"
+         ry="2.4359746" />
+      <rect
+         x="604"
+         y="624"
+         width="34"
+         height="7"
+         rx="2"
+         fill="#444441"
+         id="rect42"
+         ry="2.4359746" />
+    </g>
+    <rect
+       id="tank-2__rim"
+       inkscape:label="tank-2__rim"
+       x="444"
+       y="304"
+       width="194"
+       height="12"
+       rx="4"
+       fill="url(#grad-tank-wall)"
+       stroke="#5f5e5a"
+       stroke-width="1.5"
+       style="fill:url(#linearGradient62)"
+       ry="4.8719492" />
+    <g
+       id="tank-2__bolts"
+       inkscape:label="tank-2__bolts"
+       fill="#888780"
+       stroke="#5f5e5a"
+       stroke-width="0.8">
+      <circle
+         cx="467"
+         cy="310"
+         r="3.5"
+         id="circle36" />
+      <circle
+         cx="497"
+         cy="310"
+         r="3.5"
+         id="circle37" />
+      <circle
+         cx="587"
+         cy="310"
+         r="3.5"
+         id="circle38" />
+      <circle
+         cx="617"
+         cy="310"
+         r="3.5"
+         id="circle39" />
+    </g>
+    <path
+       id="tank-2__wall"
+       inkscape:label="tank-2__wall"
+       d="m 444,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310 Z"
+       fill="url(#grad-tank-wall)"
+       stroke="#5f5e5a"
+       stroke-width="2"
+       style="fill:url(#linearGradient63)" />
+    <!-- liquide : bac x 444→638, surface y 356 ; motif de vague 240 px (2 motifs : x 432→912) -->
+    <g
+       id="tank-2__liquid"
+       inkscape:label="tank-2__liquid"
+       clip-path="url(#clip-tank-2)">
+      <!-- à l'arrêt : surface plane stable -->
+      <rect
+         id="s_hide_00001-11"
+         inkscape:label="tank-2__surface--still"
+         x="438"
+         y="356"
+         width="206"
+         height="244"
+         fill="url(#grad-liquid)"
+         style="fill:url(#linearGradient3)" />
+      <!-- en marche : 3 couches de vague (longueur d'onde 80 / 120 / 60) -->
+      <path
+         id="s_wave_00001-a1"
+         inkscape:label="tank-2__wave--a"
+         d="m 432,356 q 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 20,-14 40,0 20,14 40,0 V 600 H 432 Z"
+         fill="url(#grad-liquid)"
+         style="fill:url(#linearGradient4)" />
+      <!-- retournée autour du centre du bac (x 541) : glisse dans l'autre sens -->
+      <path
+         id="s_wave_00001-b1"
+         inkscape:label="tank-2__wave--b"
+         d="m 432,356 q 30,10 60,0 30,-10 60,0 30,10 60,0 30,-10 60,0 30,10 60,0 30,-10 60,0 30,10 60,0 30,-10 60,0 V 600 H 432 Z"
+         transform="matrix(-1,0,0,1,1082,0)"
+         fill="#1d9e75"
+         fill-opacity="0.22" />
+      <path
+         id="s_wave_00001-c1"
+         inkscape:label="tank-2__wave--c"
+         d="m 432,356 c 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 10,-4 20,-4 30,0 10,4 20,4 30,0 V 600 H 432 Z"
+         fill="#5dcaa5"
+         fill-opacity="0.1"
+         sodipodi:nodetypes="cssssssssssssssscccc" />
+    </g>
+    <path
+       id="tank-2__shine"
+       inkscape:label="tank-2__shine"
+       d="m 444,310 v 250 q 0,22 18,30 h 158 q 18,-8 18,-30 V 310"
+       fill="url(#grad-tank-shine)"
+       fill-opacity="0.5"
+       clip-path="url(#clip-tank-2)"
+       style="fill:url(#linearGradient65)" />
+    <rect
+       id="tank-2__edge-highlight"
+       inkscape:label="tank-2__edge-highlight"
+       x="444"
+       y="310"
+       width="6"
+       height="250"
+       fill="#d3d1c7"
+       fill-opacity="0.3" />
+    <g
+       id="tank-2__drain"
+       inkscape:label="tank-2__drain"
+       transform="translate(9)">
+      <rect
+         x="514"
+         y="586"
+         width="36"
+         height="14"
+         rx="3"
+         ry="3.6539619"
+         fill="#444441"
+         stroke="#2c2a28"
+         stroke-width="1"
+         id="rect43" />
+      <rect
+         x="526"
+         y="591"
+         width="12"
+         height="4"
+         rx="1"
+         ry="1.2179873"
+         fill="#888780"
+         id="rect44" />
+    </g>
+    <g
+       id="tank-2__gauge"
+       inkscape:label="tank-2__gauge">
+      <rect
+         x="643.99432"
+         y="355.7233"
+         width="6.0113745"
+         height="232.58383"
+         fill="#d3d1c7"
+         fill-opacity="0.42"
+         stroke="#888780"
+         stroke-width="0.488625"
+         id="rect45" />
+      <path
+         d="m 644,588 h 10 m -10,-58 h 10 m -10,-58 h 10 m -10,-58 h 10 m -10,-58 h 10"
+         stroke="#5f5e5a"
+         stroke-width="1"
+         id="path45" />
+      <g
+         font-family="sans-serif"
+         font-size="10px"
+         fill="#444441"
+         id="g49">
+        <text
+           x="658"
+           y="360"
+           id="text45">100%</text>
+        <text
+           x="658"
+           y="418"
+           id="text46">75%</text>
+        <text
+           x="658"
+           y="476"
+           id="text47">50%</text>
+        <text
+           x="658"
+           y="534"
+           id="text48">25%</text>
+        <text
+           x="658"
+           y="592"
+           id="text49">0%</text>
+      </g>
+    </g>
+  </g>
+  <!-- ═══ TUYAUTERIE : un seul path (contour du tuyau, bord noir), du souffleur jusqu'au fond des deux bacs ═══ -->
+  <path
+     id="piping__line"
+     inkscape:label="piping__line"
+     d="M 125.38886,377.19183 V 149.58168 q 0,-14.03076 18.00763,-14.03076 H 326.47402 V 99.694526 h 12.00508 v 35.856394 h 183.07753 q 18.00763,0 18.00763,14.03076 V 377.19183 H 527.55917 V 149.58168 q 0,-4.67692 -6.00254,-4.67692 H 143.39649 q -6.00254,0 -6.00254,4.67692 v 227.61015 z"
+     fill="#b4b2a9"
+     stroke="#000000"
+     stroke-width="1.32461"
+     stroke-linejoin="round" />
+  <!-- ═══ BULLES DANS LE TUYAU (clés air1 / air2) ═══
+       Trajet : sortie du souffleur, tronc, branche, descente dans le bac,
+       puis le long du fond jusqu'à y 529.96 (648 px = 36 × 18). -->
+  <g
+     id="flow__bubbles--pipe"
+     inkscape:label="flow__bubbles--pipe"
+     fill="none"
+     stroke-linecap="round"
+     transform="matrix(1.0017629,0,0,0.78421965,-8.1228095,-74.87982)">
+    <g
+       id="flow__bubbles--tank-1"
+       inkscape:label="flow__bubbles--tank-1">
+      <path
+         id="s_flow_00001-5"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-1-left--ring"
+         d="m 340,222 v 52 H 151 q -12,0 -12,12 v 296 h -32 q -12,0 -12,-12 v -40.04"
+         stroke="#378add"
+         stroke-width="7.6" />
+      <path
+         id="s_flow_00001-8"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-1-right--ring"
+         d="m 340,222 v 52 H 151 q -12,0 -12,12 v 296 h 32 q 12,0 12,-12 v -40.04"
+         stroke="#378add"
+         stroke-width="7.6" />
+      <path
+         id="s_flow_00001-6"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-1-left--core"
+         d="m 340,222 v 52 H 151 q -12,0 -12,12 v 296 h -32 q -12,0 -12,-12 v -40.04"
+         stroke="#b1dafb"
+         stroke-width="6" />
+      <path
+         id="s_flow_00001-7"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-1-right--core"
+         d="m 340,222 v 52 H 151 q -12,0 -12,12 v 296 h 32 q 12,0 12,-12 v -40.04"
+         stroke="#b1dafb"
+         stroke-width="6" />
+    </g>
+    <g
+       id="flow__bubbles--tank-2"
+       inkscape:label="flow__bubbles--tank-2">
+      <path
+         id="s_flow_00001-1"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-2-left--ring"
+         d="m 340,222 v 52 h 189 q 12,0 12,12 v 296 h -32 q -12,0 -12,-12 v -40.04"
+         stroke="#378add"
+         stroke-width="7.6" />
+      <path
+         id="s_flow_00001-2"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-2-right--ring"
+         d="m 340,222 v 52 h 189 q 12,0 12,12 v 296 h 32 q 12,0 12,-12 v -40.04"
+         stroke="#378add"
+         stroke-width="7.6" />
+      <path
+         id="s_flow_00001-3"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-2-left--core"
+         d="m 340,222 v 52 h 189 q 12,0 12,12 v 296 h -32 q -12,0 -12,-12 v -40.04"
+         stroke="#b1dafb"
+         stroke-width="6" />
+      <path
+         id="s_flow_00001-4"
+         stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+         inkscape:label="flow__route--tank-2-right--core"
+         d="m 340,222 v 52 h 189 q 12,0 12,12 v 296 h 32 q 12,0 12,-12 v -40.04"
+         stroke="#b1dafb"
+         stroke-width="6" />
+    </g>
+  </g>
+  <rect
+     id="piping__tee"
+     inkscape:label="piping__tee"
+     x="318.47659"
+     y="126.10482"
+     width="28"
+     height="10"
+     rx="4"
+     ry="4"
+     fill="#5f5e5a"
+     stroke="#444441"
+     stroke-width="1" />
+  <!-- colliers d'entrée : zones tactiles des bulles de chaque bac -->
+  <rect
+     id="s_element_air1"
+     inkscape:label="piping__collar--tank-1"
+     x="117.47659"
+     y="153.40283"
+     width="28"
+     height="10"
+     rx="4"
+     fill="#5f5e5a"
+     stroke="#444441"
+     stroke-width="1"
+     ry="4" />
+  <rect
+     id="s_dfgh_air2"
+     inkscape:label="piping__collar--tank-2"
+     x="519.47656"
+     y="151.12231"
+     width="28"
+     height="10"
+     rx="4"
+     fill="#5f5e5a"
+     stroke="#444441"
+     stroke-width="1"
+     ry="4" />
+  <!-- ═══ SOUFFLEUR (clé blower) ═══ -->
+  <g
+     id="s_element_00001"
+     inkscape:label="blower"
+     transform="matrix(1.1701585,0,0,1.1116921,-65.603638,-143.32885)">
+    <g
+       id="blower__handle"
+       inkscape:label="blower__handle"
+       transform="matrix(0.45062042,0,0,0.44382324,187.16226,127.15326)">
+      <path
+         d="m 328,18 q 0,-12 12,-12 12,0 12,12"
+         fill="none"
+         stroke="#185fa5"
+         stroke-width="4"
+         stroke-linecap="round"
+         id="path18" />
+      <rect
+         x="324"
+         y="16"
+         width="32"
+         height="8"
+         rx="5.6893897"
+         ry="6.0803237"
+         fill="#185fa5"
+         stroke="#0c447c"
+         stroke-width="1"
+         id="rect18" />
+    </g>
+    <rect
+       id="blower__body"
+       inkscape:label="blower__body"
+       x="325.05209"
+       y="137.80502"
+       width="30.642189"
+       height="82.551125"
+       rx="8.5458508"
+       ry="8.9952955"
+       fill="url(#grad-blower-body)"
+       stroke="#042c53"
+       stroke-width="0.894418"
+       style="fill:url(#grad-blower-body)" />
+    <g
+       id="blower__vent--left"
+       inkscape:label="blower__vent--left"
+       transform="matrix(0.45062042,0,0,0.44382324,187.16226,127.15326)">
+      <rect
+         x="302"
+         y="34"
+         width="6"
+         height="76"
+         rx="3.792927"
+         ry="4.0535488"
+         fill="#042c53"
+         stroke="#0c447c"
+         stroke-width="0.8"
+         id="rect19" />
+      <path
+         d="m 303,42 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4"
+         stroke="#378add"
+         stroke-width="1"
+         id="path19" />
+    </g>
+    <g
+       id="blower__vent--right"
+       inkscape:label="blower__vent--right"
+       transform="matrix(0.45062042,0,0,0.44382324,187.16226,127.15326)">
+      <rect
+         x="372"
+         y="34"
+         width="6"
+         height="76"
+         rx="3.792927"
+         ry="4.0535488"
+         fill="#042c53"
+         stroke="#0c447c"
+         stroke-width="0.8"
+         id="rect20" />
+      <path
+         d="m 373,42 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4"
+         stroke="#378add"
+         stroke-width="1"
+         id="path20" />
+    </g>
+    <g
+       id="blower__turbine-1"
+       inkscape:label="blower__turbine-1"
+       transform="matrix(0.45062042,0,0,0.44382324,187.16226,127.15326)">
+      <circle
+         id="blower__turbine-1__housing"
+         inkscape:label="blower__turbine-1__housing"
+         cx="340"
+         cy="108"
+         r="30"
+         fill="url(#grad-turbine)"
+         stroke="#042c53"
+         stroke-width="1.5"
+         style="fill:url(#linearGradient68)" />
+      <circle
+         id="blower__turbine-1__cavity"
+         inkscape:label="blower__turbine-1__cavity"
+         cx="340"
+         cy="108"
+         r="23"
+         fill="#042c53"
+         stroke="#0c447c"
+         stroke-width="1" />
+      <!-- rotor : tourne autour de (340,108), centre de sa boîte -->
+      <g
+         id="s_spin_00001-1"
+         inkscape:label="blower__turbine-1__rotor"
+         stroke-linecap="round">
+        <path
+           id="blower__turbine-1__rotor--thick"
+           d="m 320,108 h 40 M 340,88 v 40"
+           stroke="#378add"
+           stroke-width="3" />
+        <path
+           id="blower__turbine-1__rotor--thin"
+           d="m 326,94 28,28 m 0,-28 -28,28"
+           stroke="#85b7eb"
+           stroke-width="2" />
+      </g>
+      <circle
+         id="blower__turbine-1__hub"
+         inkscape:label="blower__turbine-1__hub"
+         cx="340"
+         cy="108"
+         r="5.5"
+         fill="#185fa5"
+         stroke="#85b7eb"
+         stroke-width="1" />
+    </g>
+    <rect
+       id="blower__divider"
+       inkscape:label="blower__divider"
+       x="326.85458"
+       y="186.62558"
+       width="27.037226"
+       height="3.550586"
+       rx="2.563755"
+       ry="2.6985886"
+       fill="#0c447c"
+       stroke="#042c53"
+       stroke-width="0.447209" />
+    <g
+       id="blower__turbine-2"
+       inkscape:label="blower__turbine-2"
+       transform="matrix(0.45062042,0,0,0.44382324,187.16226,127.15326)">
+      <circle
+         id="blower__turbine-2__housing"
+         inkscape:label="blower__turbine-2__housing"
+         cx="340"
+         cy="162"
+         r="30"
+         fill="url(#grad-turbine)"
+         stroke="#042c53"
+         stroke-width="1.5"
+         style="fill:url(#linearGradient69)" />
+      <circle
+         id="blower__turbine-2__cavity"
+         inkscape:label="blower__turbine-2__cavity"
+         cx="340"
+         cy="162"
+         r="23"
+         fill="#042c53"
+         stroke="#0c447c"
+         stroke-width="1" />
+      <!-- rotor : tourne autour de (340,162), centre de sa boîte -->
+      <g
+         id="s_spin_00001-2"
+         inkscape:label="blower__turbine-2__rotor"
+         stroke-linecap="round">
+        <path
+           id="blower__turbine-2__rotor--thick"
+           d="m 320,162 h 40 m -20,-20 v 40"
+           stroke="#378add"
+           stroke-width="3" />
+        <path
+           id="blower__turbine-2__rotor--thin"
+           d="m 326,148 28,28 m 0,-28 -28,28"
+           stroke="#85b7eb"
+           stroke-width="2" />
+      </g>
+      <circle
+         id="blower__turbine-2__hub"
+         inkscape:label="blower__turbine-2__hub"
+         cx="340"
+         cy="162"
+         r="5.5"
+         fill="#185fa5"
+         stroke="#85b7eb"
+         stroke-width="1" />
+    </g>
+    <rect
+       id="blower__base"
+       inkscape:label="blower__base"
+       x="328.65707"
+       y="209.70439"
+       width="23.432262"
+       height="7.9888182"
+       rx="2.563755"
+       ry="2.6985886"
+       fill="#042c53"
+       stroke="#0c447c"
+       stroke-width="0.357767" />
+    <rect
+       id="blower__outlet-flange"
+       inkscape:label="blower__outlet-flange"
+       x="332.40775"
+       y="220.40675"
+       width="15.575179"
+       height="5.2246623"
+       rx="3.4183402"
+       ry="3.5981183"
+       fill="#185fa5"
+       stroke="#0c447c"
+       stroke-width="0.637868" />
+  </g>
+  <g
+     id="g4"
+     transform="translate(141.79795,-138.40263)">
+    <g
+       id="s_ertertre_00001-5"
+       inkscape:label="blower"
+       transform="matrix(0,-1.1701585,1.1116921,0,793.35806,620.12877)">
+      <g
+         id="g1"
+         transform="translate(-262.91529,-4.9872922)">
+        <rect
+           x="185.97754"
+           y="-365.0289"
+           width="43.777214"
+           height="15.834492"
+           rx="2.5637553"
+           ry="2.6985891"
+           fill="#185fa5"
+           stroke="#0c447c"
+           stroke-width="1.64553"
+           id="rect18-4"
+           transform="rotate(90)" />
+        <rect
+           id="blower__body-2"
+           inkscape:label="blower__body"
+           x="310.53445"
+           y="150.4324"
+           width="39.633945"
+           height="89.321518"
+           rx="8.5458508"
+           ry="8.9952955"
+           fill="url(#grad-blower-body)"
+           stroke="#042c53"
+           stroke-width="1.05811"
+           style="fill:url(#grad-blower-body-7)" />
+        <g
+           id="blower__vent--right-4"
+           inkscape:label="blower__vent--right"
+           transform="matrix(0.61246403,0,0,0.39888193,121.04101,139.29555)">
+          <rect
+             x="372"
+             y="34"
+             width="6"
+             height="76"
+             rx="2.7906461"
+             ry="4.5102549"
+             fill="#042c53"
+             stroke="#0c447c"
+             stroke-width="0.8"
+             id="rect20-5" />
+          <path
+             d="m 373,42 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4 m -4,8 h 4"
+             stroke="#378add"
+             stroke-width="1"
+             id="path20-8" />
+        </g>
+        <rect
+           id="blower__divider-3"
+           inkscape:label="blower__divider"
+           x="312.20438"
+           y="182.01933"
+           width="36.043934"
+           height="4.5250282"
+           rx="2.563755"
+           ry="2.6985886"
+           fill="#0c447c"
+           stroke="#042c53"
+           stroke-width="0.582916" />
+        <g
+           id="blower__turbine-2-7"
+           inkscape:label="blower__turbine-2"
+           transform="matrix(0.59989221,0,0,0.63549233,125.99452,103.24377)">
+          <circle
+             id="blower__turbine-2__housing-5"
+             inkscape:label="blower__turbine-2__housing"
+             cx="340"
+             cy="162"
+             r="30"
+             fill="url(#grad-turbine)"
+             stroke="#042c53"
+             stroke-width="1.5"
+             style="fill:url(#linearGradient69-3)" />
+          <circle
+             id="blower__turbine-2__cavity-0"
+             inkscape:label="blower__turbine-2__cavity"
+             cx="340"
+             cy="162"
+             r="23"
+             fill="#042c53"
+             stroke="#0c447c"
+             stroke-width="1" />
+          <!-- rotor : tourne autour de (340,162), centre de sa boîte -->
+          <g
+             id="s_spin_000010"
+             inkscape:label="blower__turbine-2__rotor"
+             stroke-linecap="round">
+            <path
+               id="blower__turbine-2__rotor--thick-1"
+               d="m 320,162 h 40 m -20,-20 v 40"
+               stroke="#378add"
+               stroke-width="3" />
+            <path
+               id="blower__turbine-2__rotor--thin-8"
+               d="m 326,148 28,28 m 0,-28 -28,28"
+               stroke="#85b7eb"
+               stroke-width="2" />
+          </g>
+          <circle
+             id="blower__turbine-2__hub-7"
+             inkscape:label="blower__turbine-2__hub"
+             cx="340"
+             cy="162"
+             r="5.5"
+             fill="#185fa5"
+             stroke="#85b7eb"
+             stroke-width="1" />
+        </g>
+        <rect
+           id="blower__base-1"
+           inkscape:label="blower__base"
+           x="314.07034"
+           y="226.12703"
+           width="31.238077"
+           height="10.181313"
+           rx="2.563755"
+           ry="2.6985886"
+           fill="#042c53"
+           stroke="#0c447c"
+           stroke-width="0.466333" />
+        <rect
+           id="blower__outlet-flange-5"
+           inkscape:label="blower__outlet-flange"
+           x="319.07047"
+           y="239.7666"
+           width="20.763622"
+           height="6.6585469"
+           rx="3.4183402"
+           ry="3.5981183"
+           fill="#185fa5"
+           stroke="#0c447c"
+           stroke-width="0.831432" />
+        <rect
+           id="blower__outlet-flange-5-1"
+           inkscape:label="blower__outlet-flange"
+           x="-218.05606"
+           y="365.44458"
+           width="20.893658"
+           height="6.617106"
+           rx="3.7873518"
+           ry="3.2475445"
+           fill="#185fa5"
+           stroke="#0c447c"
+           stroke-width="0.831432"
+           transform="rotate(-90)" />
+      </g>
+    </g>
+  </g>
+  <path
+     style="fill:none;fill-opacity:1;stroke:#51c19a;stroke-width:2.539;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:7.617, 7.617;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="m 534.50627,406.60102 6.40742,2.95728 539.11541,0.47515 5.7179,-6.53479 1.6337,-15.5201 0.8168,-23.68859 -1.6337,-237.70272 -2.4505,-2.45055 -62.0805,-0.81685 v -0.81684"
+     id="s_flow_000013-1" />
+  <!-- ═══ BULLES QUI MONTENT DANS LE LIQUIDE (clés air1 / air2) ═══
+       Suite des trajets du tuyau : départ y 529.96, même dasharray ; arrêt à
+       y 372, sous le creux des vagues. -->
+  <g
+     id="flow__bubbles--rising"
+     inkscape:label="flow__bubbles--rising"
+     fill="none"
+     stroke="#ffffff"
+     stroke-opacity="0.6"
+     stroke-width="7"
+     stroke-linecap="round"
+     transform="translate(-7.5234375,-200.89588)">
+    <path
+       id="s_flow_00001-rise-left-1"
+       stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+       inkscape:label="flow__route--tank-1-rise-left"
+       d="M 95,529.96 V 372" />
+    <path
+       id="s_flow_00001-rise-right"
+       stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+       inkscape:label="flow__route--tank-1-rise-right"
+       d="M 183,529.96 V 372" />
+    <path
+       id="s_flow_00001-rise-left"
+       stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+       inkscape:label="flow__route--tank-2-rise-left"
+       d="M 497,529.96 V 372" />
+    <path
+       id="s_flow_00001-rise-right-1"
+       stroke-dasharray="0.01, 17.99, 0.01, 17.99, 0.01, 17.99"
+       inkscape:label="flow__route--tank-2-rise-right"
+       d="M 585,529.96 V 372" />
+  </g>
+  <g
+     id="s_gfjhfg_tank1-7"
+     inkscape:label="tank-1"
+     transform="translate(-307.38024,-196.97921)">
+    <!-- liquide : bac x 42→236, surface y 356 ; motif de vague 240 px (2 motifs : x 30→510) -->
+  </g>
+  <metadata
+     id="metadata3">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Deux bacs 200L avec souffleur double turbine bleu et raccord en T</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g7"
+     transform="rotate(90,112.78365,288.1635)">
+    <path
+       d="m 43.089142,-1069.8755 v 719.3436"
+       fill="none"
+       stroke="#111111"
+       stroke-width="12.0775"
+       stroke-linecap="butt"
+       stroke-linejoin="round"
+       id="path117-7-5"
+       style="display:inline;stroke-width:45;stroke-dasharray:none"
+       sodipodi:nodetypes="cc" />
+    <path
+       d="m 43.089142,-1068.7011 v 570.16634 146.41898"
+       fill="none"
+       stroke="#111111"
+       stroke-width="12"
+       stroke-linecap="butt"
+       stroke-linejoin="round"
+       id="path117-2-3-0-3"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#1565c0;stroke-width:38;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:transform-center-x="65.90844"
+       inkscape:transform-center-y="-3.9403555"
+       sodipodi:nodetypes="ccc" />
+    <path
+       d="m 43.089142,-1070.2926 v 246.90948 498.02734"
+       fill="none"
+       stroke="#111111"
+       stroke-width="12"
+       stroke-linecap="butt"
+       stroke-linejoin="round"
+       id="s_flow_000010-11"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#42a5f5;stroke-width:30;stroke-linecap:round;stroke-dasharray:60.0019, 60.0019;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:transform-center-x="61.047722"
+       inkscape:transform-center-y="-3.9403555"
+       sodipodi:nodetypes="ccc" />
+  </g>
+  <rect
+     x="-242.38638"
+     y="-816.70825"
+     width="49.182644"
+     height="29.215067"
+     rx="1.9999999"
+     fill="#1a1a1a"
+     stroke="#111111"
+     stroke-width="3.86876"
+     id="rect42-5-8-0-2-5-8"
+     ry="2"
+     transform="matrix(0,-1,-1,0,0,0)" />
+  <rect
+     x="-169.83035"
+     y="-854.44922"
+     width="17.454294"
+     height="17.100538"
+     rx="2"
+     fill="#1a1a1a"
+     stroke="#111111"
+     stroke-width="1.76327"
+     id="rect42-5-8-0-2-5-8-7"
+     ry="2"
+     transform="matrix(0,-1,-1,0,0,0)" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#42a5f5;stroke-width:4.939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0.7;stroke-dasharray:14.817, 14.817;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="m 801.85274,188.58952 -0.61291,-85.8076 1.11449,-5.906251 3.12022,-4.06743 3.90033,-2.117264 5.34901,-0.780192 357.94022,-0.612911 v -1.225823"
+     id="s_flow_000010-1"
+     sodipodi:nodetypes="cccccccc" />
+  <g
+     id="s_element_000010">
+    <text
+       x="740.14227"
+       y="152.80132"
+       font-size="9px"
+       fill="#444441"
+       font-family="Arial"
+       font-weight="600"
+       text-anchor="middle"
+       id="s_cfg_000010-1"
+       style="display:inline">valve_1</text>
+    <g
+       id="s_t_00001"
+       transform="matrix(0,-1.2498026,1.2551574,0,537.45786,102.23329)"
+       style="display:inline"
+       name="valve_1">
+      <rect
+         x="-49.51289"
+         y="203.61209"
+         width="4"
+         height="12"
+         rx="1.5934258"
+         fill="#333333"
+         stroke="#111111"
+         stroke-width="0.9"
+         id="rect121-4-3-0"
+         ry="1.6002527" />
+      <rect
+         x="-31.351238"
+         y="203.72322"
+         width="4"
+         height="12"
+         rx="1.5934258"
+         fill="#333333"
+         stroke="#111111"
+         stroke-width="0.9"
+         id="rect119-9-7-6"
+         ry="1.6002527" />
+      <rect
+         x="-44.432064"
+         y="202.72322"
+         width="12"
+         height="14"
+         rx="1.5934258"
+         fill="#1a1a1a"
+         stroke="#111111"
+         stroke-width="1.3"
+         id="rect120-1-2-0"
+         ry="1.6002527" />
+      <rect
+         x="-42.432064"
+         y="194.72322"
+         width="8"
+         height="8"
+         rx="0.79671288"
+         fill="#2a2a2a"
+         stroke="#111111"
+         stroke-width="1"
+         id="rect122-5-4-3"
+         ry="0.80012637" />
+      <line
+         x1="-41.432064"
+         y1="196.72322"
+         x2="-35.432064"
+         y2="196.72322"
+         stroke="#555555"
+         stroke-width="0.8"
+         id="line122-9-1-3" />
+      <line
+         x1="-41.432064"
+         y1="198.72322"
+         x2="-35.432064"
+         y2="198.72322"
+         stroke="#555555"
+         stroke-width="0.8"
+         id="line123-8-82-5" />
+      <line
+         x1="-41.432064"
+         y1="200.72322"
+         x2="-35.432064"
+         y2="200.72322"
+         stroke="#555555"
+         stroke-width="0.8"
+         id="line124-3-6-0" />
+      <line
+         x1="-38.432064"
+         y1="202.72322"
+         x2="-38.432064"
+         y2="194.72322"
+         stroke="#444444"
+         stroke-width="1.5"
+         stroke-linecap="round"
+         id="line125-0-0-2" />
+      <rect
+         x="-42.432064"
+         y="205.72322"
+         width="8"
+         height="8"
+         rx="0.79671288"
+         fill="#333333"
+         stroke="#555555"
+         stroke-width="0.6"
+         id="rect125-9-3-3"
+         ry="0.80012637" />
+      <line
+         x1="-44.432064"
+         y1="209.72322"
+         x2="-32.432064"
+         y2="209.72322"
+         stroke="#555555"
+         stroke-width="0.8"
+         id="line126-0-9" />
+      <circle
+         cx="-38.432064"
+         cy="186.72322"
+         r="4"
+         fill="#888780"
+         stroke="#5f5e5a"
+         stroke-width="1"
+         id="s_hide_000010-1-27" />
+      <circle
+         cx="-38.432064"
+         cy="186.72322"
+         r="4"
+         fill="#888780"
+         stroke="#5f5e5a"
+         stroke-width="1"
+         id="s_flash_000010-1-1"
+         style="fill:#18ed15;fill-opacity:1" />
+    </g>
+  </g>
+  <g
+     id="s_element_000012">
+    <g
+       id="g37"
+       transform="matrix(0.8253998,0,0,1.0059602,172.86899,-167.80796)">
+      <g
+         id="g9">
+        <rect
+           x="-511.2272"
+           y="-901.17322"
+           width="8.7694559"
+           height="15.798674"
+           rx="1.9881501"
+           fill="#1a1a1a"
+           stroke="#111111"
+           stroke-width="1.20132"
+           id="rect42-5-8-0-1"
+           ry="2.4230683"
+           transform="matrix(0,-1,-1,0,0,0)" />
+      </g>
+      <rect
+         x="-521.82025"
+         y="-908.16473"
+         width="26.957392"
+         height="14.951017"
+         rx="1.9881501"
+         fill="#1a1a1a"
+         stroke="#111111"
+         stroke-width="2.04898"
+         id="rect42-5-8-0"
+         ry="2.4230683"
+         transform="matrix(0,-1,-1,0,0,0)" />
+    </g>
+    <text
+       x="857.00018"
+       y="347.30319"
+       font-size="12.9661px"
+       fill="#444441"
+       font-family="Arial"
+       font-weight="600"
+       text-anchor="middle"
+       id="s_element_value_000012"
+       style="display:inline;stroke-width:1.44068"
+       transform="scale(1.0043108,0.9957077)">flowmeter_1</text>
+  </g>
+  <g
+     id="s_element_000011"
+     transform="translate(-194.98409,268.08932)">
+    <text
+       x="1153.5448"
+       y="18.273453"
+       font-size="12.9661px"
+       fill="#444441"
+       font-family="Arial"
+       font-weight="600"
+       text-anchor="middle"
+       id="s_element_value_000011"
+       style="display:inline;stroke-width:1.44068"
+       transform="scale(1.0043108,0.9957077)">valve_2</text>
+    <rect
+       x="-31.779917"
+       y="1103.1166"
+       width="5.7379975"
+       height="17.362726"
+       rx="2"
+       fill="#333333"
+       stroke="#111111"
+       stroke-width="1.29661"
+       id="rect121-4-3"
+       ry="1.9999999"
+       transform="rotate(-90)" />
+    <rect
+       x="-5.7270293"
+       y="1103.2776"
+       width="5.7379975"
+       height="17.362726"
+       rx="2"
+       fill="#333333"
+       stroke="#111111"
+       stroke-width="1.29661"
+       id="rect119-9-7"
+       ry="1.9999999"
+       transform="rotate(-90)" />
+    <rect
+       x="-24.491465"
+       y="1101.8307"
+       width="17.213993"
+       height="20.256514"
+       rx="2"
+       fill="#1a1a1a"
+       stroke="#111111"
+       stroke-width="1.87289"
+       id="rect120-1-2"
+       ry="1.9999999"
+       transform="rotate(-90)"
+       style="fill:#b4b2a9;fill-opacity:1" />
+    <rect
+       x="-21.622446"
+       y="1090.2555"
+       width="11.475995"
+       height="11.57515"
+       rx="1"
+       fill="#2a2a2a"
+       stroke="#111111"
+       stroke-width="1.44068"
+       id="rect122-5-4"
+       ry="0.99999994"
+       transform="rotate(-90)"
+       style="fill:#b4b2a9;fill-opacity:1" />
+    <line
+       x1="1093.1493"
+       y1="20.187967"
+       x2="1093.1493"
+       y2="11.580972"
+       stroke="#555555"
+       stroke-width="1.15255"
+       id="line122-9-1" />
+    <line
+       x1="1096.0431"
+       y1="20.187967"
+       x2="1096.0431"
+       y2="11.580972"
+       stroke="#555555"
+       stroke-width="1.15255"
+       id="line123-8-82" />
+    <line
+       x1="1098.9369"
+       y1="20.187967"
+       x2="1098.9369"
+       y2="11.580972"
+       stroke="#555555"
+       stroke-width="1.15255"
+       id="line124-3-6" />
+    <line
+       x1="1101.8307"
+       y1="15.884469"
+       x2="1090.2555"
+       y2="15.884469"
+       stroke="#444444"
+       stroke-width="2.16102"
+       stroke-linecap="round"
+       id="line125-0-0" />
+    <ellipse
+       cx="-15.884469"
+       cy="1078.6803"
+       fill="#888780"
+       stroke="#5f5e5a"
+       stroke-width="1.44068"
+       id="s_hide_00001-1"
+       transform="rotate(-90)"
+       rx="5.7379975"
+       ry="5.7875752" />
+    <ellipse
+       cx="-15.884469"
+       cy="1078.6803"
+       fill="#888780"
+       stroke="#5f5e5a"
+       stroke-width="1.44068"
+       id="s_flash_000011-1"
+       style="fill:#18ed15;fill-opacity:1"
+       transform="rotate(-90)"
+       rx="5.7379975"
+       ry="5.7875752" />
+    <rect
+       x="-21.622446"
+       y="1106.1714"
+       width="11.475995"
+       height="11.57515"
+       rx="1"
+       fill="#333333"
+       stroke="#555555"
+       stroke-width="0.86441"
+       id="rect125-9-3"
+       ry="0.99999994"
+       transform="rotate(-90)" />
+  </g>
+  <g
+     id="s_element_000013"
+     transform="translate(162.814,-137.84457)">
+    <text
+       x="959.24103"
+       y="427.5"
+       font-size="12.9661px"
+       fill="#444441"
+       font-family="Arial"
+       font-weight="600"
+       text-anchor="middle"
+       id="s_element_value_000013-1"
+       style="display:inline;stroke-width:1.44068"
+       transform="scale(1.0043108,0.9957077)">valve_3</text>
+    <rect
+       x="-437.71381"
+       y="915.65588"
+       width="5.7379975"
+       height="17.362726"
+       rx="2"
+       fill="#333333"
+       stroke="#111111"
+       stroke-width="1.29661"
+       id="rect121-4-3-7"
+       ry="1.9999999"
+       transform="rotate(-90)" />
+    <rect
+       x="-411.66092"
+       y="915.81689"
+       width="5.7379975"
+       height="17.362726"
+       rx="2"
+       fill="#333333"
+       stroke="#111111"
+       stroke-width="1.29661"
+       id="rect119-9-7-1"
+       ry="1.9999999"
+       transform="rotate(-90)" />
+    <rect
+       x="-430.42535"
+       y="914.37"
+       width="17.213993"
+       height="20.256514"
+       rx="2"
+       fill="#1a1a1a"
+       stroke="#111111"
+       stroke-width="1.87289"
+       id="rect120-1-2-6"
+       ry="1.9999999"
+       transform="rotate(-90)"
+       style="fill:#b4b2a9;fill-opacity:1" />
+    <rect
+       x="-427.55634"
+       y="902.7948"
+       width="11.475995"
+       height="11.57515"
+       rx="1"
+       fill="#2a2a2a"
+       stroke="#111111"
+       stroke-width="1.44068"
+       id="rect122-5-4-0"
+       ry="0.99999994"
+       transform="rotate(-90)"
+       style="fill:#b4b2a9;fill-opacity:1" />
+    <line
+       x1="905.6886"
+       y1="426.12186"
+       x2="905.6886"
+       y2="417.51486"
+       stroke="#555555"
+       stroke-width="1.15255"
+       id="line122-9-1-9" />
+    <line
+       x1="908.5824"
+       y1="426.12186"
+       x2="908.5824"
+       y2="417.51486"
+       stroke="#555555"
+       stroke-width="1.15255"
+       id="line123-8-82-2" />
+    <line
+       x1="911.4762"
+       y1="426.12186"
+       x2="911.4762"
+       y2="417.51486"
+       stroke="#555555"
+       stroke-width="1.15255"
+       id="line124-3-6-9" />
+    <line
+       x1="914.37"
+       y1="421.81836"
+       x2="902.7948"
+       y2="421.81836"
+       stroke="#444444"
+       stroke-width="2.16102"
+       stroke-linecap="round"
+       id="line125-0-0-6" />
+    <rect
+       x="-427.55634"
+       y="918.71069"
+       width="11.475995"
+       height="11.57515"
+       rx="1"
+       fill="#333333"
+       stroke="#555555"
+       stroke-width="0.86441"
+       id="rect125-9-3-0"
+       ry="0.99999994"
+       transform="rotate(-90)" />
+    <ellipse
+       cx="-421.81836"
+       cy="891.2196"
+       fill="#888780"
+       stroke="#5f5e5a"
+       stroke-width="1.44068"
+       id="s_hide_00001-1-2"
+       transform="rotate(-90)"
+       rx="5.7379975"
+       ry="5.7875752" />
+    <ellipse
+       cx="-421.81836"
+       cy="891.2196"
+       fill="#888780"
+       stroke="#5f5e5a"
+       stroke-width="1.44068"
+       id="s_flash_000013"
+       style="fill:#18ed15;fill-opacity:1"
+       transform="rotate(-90)"
+       rx="5.7379975"
+       ry="5.7875752" />
+  </g>
+  <g
+     id="s_element_000014"
+     transform="translate(0,8.233627)">
+    <text
+       x="1028.2782"
+       y="341.15384"
+       font-size="12.9661px"
+       fill="#444441"
+       font-family="Arial"
+       font-weight="600"
+       text-anchor="middle"
+       id="s_element_value_000014"
+       style="display:inline;stroke-width:1.44068"
+       transform="scale(1.0043108,0.9957077)">flowmeter_1</text>
+    <g
+       id="g37-7"
+       transform="matrix(0.8253998,0,0,1.0059602,343.81009,-174.38664)">
+      <rect
+         x="-520.17511"
+         y="-908.78229"
+         width="26.957392"
+         height="14.951017"
+         rx="1.9881501"
+         fill="#1a1a1a"
+         stroke="#111111"
+         stroke-width="2.04898"
+         id="rect42-5-8-0-2"
+         ry="2.4230683"
+         transform="matrix(0,-1,-1,0,0,0)" />
+      <rect
+         x="-511.2272"
+         y="-901.17322"
+         width="8.7694559"
+         height="15.798674"
+         rx="1.9881501"
+         fill="#1a1a1a"
+         stroke="#111111"
+         stroke-width="1.20132"
+         id="rect42-5-8-0-1-0"
+         ry="2.4230683"
+         transform="matrix(0,-1,-1,0,0,0)" />
+    </g>
+  </g>
+  <rect
+     x="-243.73724"
+     y="-1174.4292"
+     width="49.182644"
+     height="29.215067"
+     rx="1.9999999"
+     fill="#1a1a1a"
+     stroke="#111111"
+     stroke-width="3.86876"
+     id="rect42-5-8-0-2-5"
+     ry="2"
+     transform="matrix(0,-1,-1,0,0,0)" />
+  <rect
+     x="-96.969582"
+     y="-854.76215"
+     width="17.454294"
+     height="17.100538"
+     rx="2"
+     fill="#1a1a1a"
+     stroke="#111111"
+     stroke-width="1.76327"
+     id="rect42-5-8-0-2-5-8-7-3"
+     ry="2"
+     transform="matrix(0,-1,-1,0,0,0)" />
+  <rect
+     x="-169.91112"
+     y="-1024.2637"
+     width="17.454294"
+     height="17.100538"
+     rx="2"
+     fill="#1a1a1a"
+     stroke="#111111"
+     stroke-width="1.76327"
+     id="rect42-5-8-0-2-5-8-7-3-8"
+     ry="2"
+     transform="matrix(0,-1,-1,0,0,0)" />
+  <rect
+     x="-96.842026"
+     y="-1024.1173"
+     width="17.454294"
+     height="17.100538"
+     rx="2"
+     fill="#1a1a1a"
+     stroke="#111111"
+     stroke-width="1.76327"
+     id="rect42-5-8-0-2-5-8-7-3-1"
+     ry="2"
+     transform="matrix(0,-1,-1,0,0,0)" />
+</svg>
