@@ -24,16 +24,22 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.44135919"
-     inkscape:cx="1553.1567"
+     inkscape:cx="1552.0239"
      inkscape:cy="586.82363"
      inkscape:window-width="1920"
      inkscape:window-height="941"
      inkscape:window-x="0"
      inkscape:window-y="30"
      inkscape:window-maximized="0"
-     inkscape:current-layer="sdfgdffff" />
+     inkscape:current-layer="s_element_000111" />
   <defs
      id="defs20">
+    <rect
+       x="1663.0446"
+       y="52.111751"
+       width="142.74088"
+       height="9.0629131"
+       id="rect1" />
     <rect
        x="1346.2184"
        y="-241.97363"
@@ -579,7 +585,7 @@
      x="1076.5591"
      y="-108"
      style="font-weight:600;font-size:24px;font-family:'-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:2px;fill:#7a8a99"
-     id="text3">AUJOURD'HUI</text>
+     id="text3">Today</text>
   <g
      id="s_element_00014"
      style="font-family:-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;fill:#2b3a48">
@@ -605,10 +611,10 @@
            id="text7">%</text>
       </g>
       <text
-         x="1979.0"
+         x="1979"
          y="-108"
          id="text8"
-         style="font-size:24px;font-weight:600;letter-spacing:2px;fill:#7a8a99;font-family:-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif">HUMIDITÉ</text>
+         style="font-weight:600;font-size:24px;font-family:'-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:2px;fill:#7a8a99">Humidity</text>
       <text
          id="s_element_value_00014"
          x="1977.0"
@@ -653,21 +659,30 @@
     <text
        x="742"
        y="-108"
-       style="font-size:24px;font-weight:600;letter-spacing:2px;fill:#7a8a99;font-family:-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif"
-       id="text2">ACTUELLEMENT</text>
+       style="font-weight:600;font-size:24px;font-family:'-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:2px;fill:#7a8a99"
+       id="text2">Now</text>
     <text
        id="s_element_value_000111"
        x="740"
        y="-42"
        style="font-weight:700;font-size:66px;font-family:'-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif;display:inline;fill:#1f2d3a">25°</text>
+    <text
+       xml:space="preserve"
+       transform="translate(0,-170)"
+       id="text1"
+       style="fill:#18e526;text-orientation:auto;stroke-miterlimit:0.7;stroke-linejoin:round;font-size:8px;-inkscape-font-specification:'Arial Bold';font-family:Arial;line-height:0.6;paint-order:fill markers stroke;stroke-linecap:round;stroke:#1565c0;font-weight:bold;text-align:center;stroke-width:1.1;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1)" />
   </g>
   <g
      id="s_element_00012">
     <text
-       x="1660.0"
+       x="1660"
        y="-108"
        id="text6"
-       style="font-size:24px;font-weight:600;letter-spacing:2px;fill:#7a8a99;font-family:-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;display:inline">PROBA. PLUIE</text>
+       style="font-weight:600;font-size:24px;font-family:'-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:2px;display:inline;fill:#7a8a99"><tspan
+         sodipodi:role="line"
+         id="tspan5"
+         x="1660"
+         y="-108">Rain probability</tspan></text>
     <text
        id="s_element_value_00012"
        x="1658.0"
